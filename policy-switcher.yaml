@@ -1,0 +1,54 @@
+name: "定时切换策略节点"
+description: "按时间计划自动切换策略组选中的节点。支持多时间段、自动切换+通知兜底。"
+author: "Minis"
+homepage: ""
+icon: "clock.arrow.2.circlepath"
+
+# 模块参数（用户可在 Egern 主配置的 modules 引用中覆盖）
+compat_arguments: {}
+
+# 环境变量声明 —— Egern 会在模块设置页自动生成 UI 控件
+# 用户在设置页填写的值会覆盖下方 scriptings.env 中的默认值
+env_schema:
+  POLICY_GROUP:
+    name: "策略组名称"
+    description: "要自动切换的策略组名称（须已存在于配置中）"
+    default_value: "Proxy"
+
+  SCHEDULE:
+    name: "切换计划"
+    description: '格式: HH:MM|节点名,HH:MM|节点名  当前: 10:00切换美西, 19:00切换CDT'
+    default_value: "10:00|Matrix-美西-4837🇺🇸AnyTLS1,19:00|HKS-🇭🇰CDT优化"
+
+  NOTIFY_ON_SWITCH:
+    name: "切换成功通知"
+    options:
+      - "true"
+      - "false"
+
+  NOTIFY_ON_FAIL:
+    name: "切换失败通知"
+    options:
+      - "true"
+      - "false"
+
+  API_PORT:
+    name: "本地API端口"
+    description: "留空自动探测(3080/6171/9090)，手动指定可填数字"
+    default_value: ""
+
+# 定时脚本：每小时整点检查是否需要切换
+# 脚本内部根据 SCHEDULE 配置判断当前时段应使用的节点
+scriptings:
+  - schedule:
+      name: "定时策略切换"
+      cron: "0 * * * *"
+      script_url: "https://raw.githubusercontent.com/USER/REPO/main/policy-switcher.js"
+      env:
+        POLICY_GROUP: "综合利用EMBY4837"
+        SCHEDULE: "10:00|Matrix-美西-4837🇺🇸AnyTLS1,19:00|HKS-🇭🇰CDT优化"
+        NOTIFY_ON_SWITCH: "true"
+        NOTIFY_ON_FAIL: "true"
+        API_PORT: ""
+      timeout: 30
+      disabled: false
