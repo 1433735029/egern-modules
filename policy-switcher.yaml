@@ -43,7 +43,7 @@ scriptings:
   - schedule:
       name: "定时策略切换"
       cron: "0 * * * *"
-      script_url: "https://raw.githubusercontent.com/USER/REPO/main/policy-switcher.js"
+      script_url: "https://raw.githubusercontent.com/1433735029/egern-modules/main/policy-switcher.js"
       env:
         POLICY_GROUP: "综合利用EMBY4837"
         SCHEDULE: "10:00|Matrix-美西-4837🇺🇸AnyTLS1,19:00|HKS-🇭🇰CDT优化"
